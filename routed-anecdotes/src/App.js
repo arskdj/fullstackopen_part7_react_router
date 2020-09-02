@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import { Switch, Route, Link , useRouteMatch} from "react-router-dom"
+import { useHistory, Switch, Route, Link , useRouteMatch} from "react-router-dom"
 import { cleanup } from '@testing-library/react'
 
 const Menu = () => {
@@ -60,7 +60,6 @@ const CreateNew = (props) => {
     const [author, setAuthor] = useState('')
     const [info, setInfo] = useState('')
 
-
     const handleSubmit = (e) => {
         e.preventDefault()
         props.addNew({
@@ -69,6 +68,7 @@ const CreateNew = (props) => {
             info,
             votes: 0
         })
+
     }
 
     return (
@@ -113,10 +113,14 @@ const App = () => {
     ])
 
     const [notification, setNotification] = useState('')
+    const history = useHistory()
 
     const addNew = (anecdote) => {
         anecdote.id = (Math.random() * 10000).toFixed(0)
         setAnecdotes(anecdotes.concat(anecdote))
+        history.push('/')
+        setNotification(`a new anecdote ${anecdote.content} created!`)
+        setTimeout( () => setNotification(''), 5000)
     }
 
     const anecdoteById = (id) =>
@@ -138,8 +142,10 @@ const App = () => {
         ? anecdoteById(match.params.id)
         : null
 
+
     return (
         <div>
+                <p> {notification} </p>
                 <h1>Software anecdotes</h1>
                 <Menu />
                 <Switch>  
