@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import { BrowserRouter, Switch, Route, Link } from "react-router-dom"
+import { Switch, Route, Link , useRouteMatch} from "react-router-dom"
 import { cleanup } from '@testing-library/react'
 
 const Menu = () => {
@@ -20,9 +20,17 @@ const AnecdoteList = ({ anecdotes }) => (
     <div>
         <h2>Anecdotes</h2>
         <ul>
-            {anecdotes.map(anecdote => <li key={anecdote.id} >{anecdote.content}</li>)}
+            {anecdotes.map(anecdote => <li key={anecdote.id} > <Link to={`/anecdotes/${anecdote.id}`}> {anecdote.content} </Link></li>)}
         </ul>
     </div>
+)
+
+const Anecdote = ({anecdote}) => (
+    <div>
+        <h2> { anecdote.content } </h2>
+        <p> has { anecdote.votes } votes </p>
+        <p> { anecdote.info } </p>
+    </div>    
 )
 
 const About = () => (
@@ -125,27 +133,30 @@ const App = () => {
         setAnecdotes(anecdotes.map(a => a.id === id ? voted : a))
     }
 
+    const match = useRouteMatch('/anecdotes/:id')
+    const anecdote = match 
+        ? anecdoteById(match.params.id)
+        : null
+
     return (
         <div>
-            <BrowserRouter>
                 <h1>Software anecdotes</h1>
                 <Menu />
                 <Switch>  
                     <Route path='/create'> 
-                        { console.log('route create ') }
                         <CreateNew addNew={addNew} />
                     </Route>
                     <Route path='/about'> 
-                        { console.log('route about ') }
                         <About/>
                     </Route>
+                    <Route path='/anecdotes/:id'> 
+                        <Anecdote anecdote= {anecdote}/>
+                    </Route>
                     <Route path='/'> 
-                        { console.log('route / ') }
                         <AnecdoteList anecdotes={anecdotes} />
                     </Route>
                 </Switch>
                 <Footer />
-            </BrowserRouter>
         </div>
     )
 }
