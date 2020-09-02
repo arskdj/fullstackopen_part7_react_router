@@ -9,9 +9,11 @@ const useField = (name) => {
     const reset = () => { setValue('') }
 
     return {
-        name,
-        value,
-        onChange,
+        field : {
+            name,
+            value,
+            onChange,
+        },
         reset
     } 
 }
