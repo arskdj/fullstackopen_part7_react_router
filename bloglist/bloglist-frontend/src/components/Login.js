@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {login} from '../reducers/userReducer'
 import {setNotification} from '../reducers/notificationReducer'
 import {useSelector, useDispatch} from 'react-redux'
+import loginService from '../services/login.js'
 
 const Login = () => {
 
@@ -12,9 +13,13 @@ const Login = () => {
 
     const handleLogin = async (event) => {
         event.preventDefault()
-        dispatch(login(username, password))
+        const response = await loginService.login({ username, password })
+        if (response.error) {
+            dispatch(setNotification('!e' + response.error))
+        }else{
+            dispatch(login(response))
+        }
     }
-
 
 
     return (

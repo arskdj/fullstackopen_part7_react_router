@@ -1,7 +1,4 @@
-import loginService from '../services/login.js'
-import {setNotification} from '../reducers/notificationReducer'
-
-const userReducer = (state=[], action) => {
+const userReducer = (state=null, action) => {
     switch (action.type){
     case 'LOGIN':
     case 'LOGOUT':
@@ -11,14 +8,9 @@ const userReducer = (state=[], action) => {
     }
 }
 
-export const login = ({ username, password }) => {
+export const login = (user) => {
     return async dispatch => {
-        const user = await loginService.login({ username, password })
-        if (user.error) {
-            dispatch(setNotification('!e' + user.error))
-        }else{
-            window.localStorage.setItem('user', JSON.stringify(user))
-        }
+        window.localStorage.setItem('user', JSON.stringify(user))
 
         dispatch({
             type : 'LOGIN',
@@ -29,23 +21,22 @@ export const login = ({ username, password }) => {
 
 
 export const logout = (user) => {
-    return async dispatch => {
-        window.localStorage.removeItem('user')
-        setNotification(`bye ${user.name}`)
+    return dispatch => {
         dispatch({
             type : 'LOGOUT',
-            data : { user:null }
+            data : { user: null }
         })
     }
 }
 
 
-export const load = (user) => {
-    return async dispatch => {
+export const load = () => {
+    return dispatch => {
         const storage = window.localStorage.getItem('user')
         const user = storage
-            ? JSON.parse(user)
+            ? JSON.parse(storage)
             : null
+
         dispatch({
             type : 'LOAD',
             data : { user }

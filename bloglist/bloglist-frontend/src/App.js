@@ -7,6 +7,7 @@ import Togglable from './components/Togglable'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import { initBlogs } from './reducers/blogReducer'
+import { setNotification } from './reducers/notificationReducer'
 import { logout, load } from './reducers/userReducer'
 import { useSelector, useDispatch } from 'react-redux'
 
@@ -14,17 +15,11 @@ const App = () => {
   const dispatch = useDispatch()
   const blogs = useSelector(state => state.blogs)
   const user = useSelector(state => state.user)
-  const [notification, setNotification] = useState(null)
   const blogFormRef = useRef()
 
   useEffect(() => {
       dispatch(initBlogs())
   }, [dispatch])
-
-  const notificationHook = () => {
-    setTimeout( () => setNotification(null), 5000)
-  }
-  useEffect( notificationHook, [notification])
 
   useEffect(() => {
     dispatch(load())    
@@ -65,6 +60,8 @@ const App = () => {
 
     const handleLogout = () => {
         dispatch(logout(user))
+        window.localStorage.removeItem('user')
+        dispatch(setNotification(`bye ${user.name}`))
     }
 
   const showLoggedInMsg = () => (
@@ -91,7 +88,7 @@ const App = () => {
 
   return (
     <div>
-      <Notification msg={notification}/>
+      <Notification />
 
       {user && showLoggedInMsg()}
       {user && showBlogForm()}

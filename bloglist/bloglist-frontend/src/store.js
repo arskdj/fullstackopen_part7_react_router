@@ -6,7 +6,7 @@ import notificationReducer from './reducers/notificationReducer'
 import {composeWithDevTools} from 'redux-devtools-extension'
 
 const reducer = combineReducers({
-    users : userReducer,
+    user : userReducer,
     blogs : blogReducer,
     notification : notificationReducer
 })
