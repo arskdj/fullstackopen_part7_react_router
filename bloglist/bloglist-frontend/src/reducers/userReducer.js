@@ -21,6 +21,7 @@ export const login = (user) => {
 
 
 export const logout = (user) => {
+    window.localStorage.removeItem('user')
     return dispatch => {
         dispatch({
             type : 'LOGOUT',
