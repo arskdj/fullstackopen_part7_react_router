@@ -6,7 +6,7 @@ import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 import blogService from './services/blogs'
 import loginService from './services/login'
-import { initBlogs, addBlog } from './reducers/blogReducer'
+import { initBlogs, addBlog, likeBlog, removeBlog } from './reducers/blogReducer'
 import { setNotification } from './reducers/notificationReducer'
 import { logout, load } from './reducers/userReducer'
 import { useSelector, useDispatch } from 'react-redux'
@@ -37,13 +37,13 @@ const App = () => {
         }
     }
 
-    const likeBlog = async (blog) => {
+    const likeHandler = async (blog) => {
         console.log('app.js',blog)
         const updatedBlog =  await blogService.likeBlog(blog)
         if (updatedBlog.error){
             setNotification('!e'+updatedBlog.error)
         } else {
-            blog.likes = updatedBlog.likes
+            dispatch(likeBlog(updatedBlog))
             return updatedBlog.likes
         }
     }
@@ -56,6 +56,7 @@ const App = () => {
             setNotification('!e'+removed.error)
         } else {
             setNotification(`${removed.title} deleted`)
+            dispatch(removeBlog(blog.id))
         }
     }
 
@@ -97,7 +98,7 @@ const App = () => {
             <h2>blogs</h2>
             <div id='blogList'>
                 {blogs.sort((a,b) => b.likes - a.likes).map(blog =>
-                <Blog key={blog.id} blog={blog} likeBlog= {likeBlog} deleteBlog= {deleteBlog} user= {user}/>
+                <Blog key={blog.id} blog={blog} likeBlog= {likeHandler} deleteBlog= {deleteBlog} user= {user}/>
                 )}
             </div>
 
