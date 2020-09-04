@@ -121,8 +121,8 @@ const App = () => {
 
         return (
             <div >
-                <Link style={style} to='/'> Home </Link>
-                <Link style={style} to='/users'> Users </Link>
+                <Link style={style} to='/'> blogs </Link>
+                <Link style={style} to='/users'> users </Link>
             </div>
         )
     }
