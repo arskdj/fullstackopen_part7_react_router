@@ -18,11 +18,13 @@ blogsRouter.post('/', async (req, res) => {
     const blog = new Blog(req.body)
     blog.user = user._id
 
-    const newBlog = await blog.save()
-    console.log('newblog',newBlog)
+    await blog.save()
+    const newBlog = await Blog .findById(blog._id).populate('user', {
+        name :1,
+        username :1,
+    })
 
     user.blogs.push(newBlog._id)
-    console.log('newuser',user)
 
     const updatedUser = await User.findByIdAndUpdate(user.id, user, {new:true})
 

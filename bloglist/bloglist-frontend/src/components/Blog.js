@@ -45,7 +45,7 @@ const Blog = ({ blog, likeBlog, deleteBlog, user }) => {
         <div>
             <p id="url"> { blog.url } </p>
             <p>
-                <span className="likes">  { likes } </span> 
+                <span className="likes">  { likes } </span>
                 <button className="likeButton" onClick={likeHandler}> like </button>
             </p>
         </div>
@@ -55,6 +55,9 @@ const Blog = ({ blog, likeBlog, deleteBlog, user }) => {
         <div style={blogStyle}>
             <p id="title"> {`${blog.title} by ${blog.author}`}</p>
             <button className='showBlog' onClick={toggleDetails}> {buttonName} </button>
+            {   console.log('rending blog')  }
+            {   console.log(blog)  }
+            {   console.log(user)  }
             {user && blog.user &&  user.id === blog.user.id && showDeleteButton()}
             {show && blogDetails()}
         </div>

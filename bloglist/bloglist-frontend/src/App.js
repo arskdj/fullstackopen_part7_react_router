@@ -50,7 +50,8 @@ const App = () => {
         if (updatedBlog.error){
             dispatch(setNotification('!e'+updatedBlog.error))
         } else {
-            dispatch(likeBlog(updatedBlog))
+            //dispatch(likeBlog(updatedBlog))
+            console.log('updatedBlog', updatedBlog)
             return updatedBlog.likes
         }
     }

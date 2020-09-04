@@ -46,11 +46,13 @@ const login = async (username, password) => {
 
     const payload = {
         username : user.username,
-        id : user.id
+        id : user.id,
+        name : user.name
     }
 
+    console.log('payload', payload)
     const token = await jwt.sign(payload, config.SECRET)
-    return { token, ...user }
+    return { token, ...payload }
 }
 
 

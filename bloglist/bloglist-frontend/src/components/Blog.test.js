@@ -12,10 +12,12 @@ test('test blog', () => {
         title: 'test title',
         url: 'test url',
         author : 'test author',
-        likes : 1111
+        likes : 1
     }
 
-    const likeFn = jest.fn()
+    const likeFn = jest.fn(() => {
+        return 2
+    })
     const component = render( <Blog blog={blog} likeBlog={likeFn} />)
 
     const button = component.getByText('view')
@@ -24,7 +26,7 @@ test('test blog', () => {
 
     const title = component.container.querySelector('#title')
     const url = component.container.querySelector('#url')
-    const likes = component.container.querySelector('#likes')
+    const likes = component.container.querySelector('.likes')
 
     expect(title).toHaveTextContent(`${blog.title} by ${blog.author}`)
     expect(url).toHaveTextContent(blog.url)
