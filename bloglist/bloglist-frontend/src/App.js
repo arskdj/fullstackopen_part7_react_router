@@ -8,13 +8,13 @@ import blogService from './services/blogs'
 import loginService from './services/login'
 import { initBlogs, addBlog, likeBlog, removeBlog } from './reducers/blogReducer'
 import { setNotification } from './reducers/notificationReducer'
-import { logout, load } from './reducers/userReducer'
+import { logout, load } from './reducers/loginReducer'
 import { useSelector, useDispatch } from 'react-redux'
 
 const App = () => {
     const dispatch = useDispatch()
     const blogs = useSelector(state => state.blogs)
-    const user = useSelector(state => state.user)
+    const user = useSelector(state => state.login)
     const blogFormRef = useRef()
 
     useEffect(() => {
@@ -55,7 +55,7 @@ const App = () => {
         if (removed.error){
             setNotification('!e'+removed.error)
         } else {
-            setNotification(`${removed.title} deleted`)
+            dispatch(setNotification(`${removed.title} deleted`))
             dispatch(removeBlog(blog.id))
         }
     }

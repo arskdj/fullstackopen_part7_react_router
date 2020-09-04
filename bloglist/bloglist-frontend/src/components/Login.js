@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import {login} from '../reducers/userReducer'
+import {login} from '../reducers/loginReducer'
 import {setNotification} from '../reducers/notificationReducer'
 import {useSelector, useDispatch} from 'react-redux'
 import loginService from '../services/login.js'
@@ -9,7 +9,7 @@ const Login = () => {
     const dispatch = useDispatch()
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
-    const user = useSelector(state => state.user)
+    const user = useSelector(state => state.login)
 
     const handleLogin = async (event) => {
         event.preventDefault()

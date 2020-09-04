@@ -1,6 +1,6 @@
 let tid = null
 
-const notificationReducer = (state=null, action) => {
+const notificationReducer = (state={message:null}, action) => {
     switch (action.type){
     case 'NOTIFY':
     return action.data
@@ -11,12 +11,11 @@ const notificationReducer = (state=null, action) => {
 export const setNotification = (message) => {
     return dispatch => {
 
-            let color = 'green'
+        let color = 'green'
 
         if (message.startsWith('!e')) {
             color = 'red'
             message = message.substr(2)
-        }else{
         }
 
          const notify = (message) => {

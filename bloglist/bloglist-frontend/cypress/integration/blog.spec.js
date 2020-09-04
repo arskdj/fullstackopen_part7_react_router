@@ -18,7 +18,7 @@ describe('Blog app', function() {
     })
 
 
-    describe.only('Login', function(){
+    describe('Login', function(){
         it('succeeds with correct credentials', function() {
             cy.get('#username').type(user.username)
             cy.get('#password').type('1234')
