@@ -3,6 +3,7 @@ import Blog from './components/Blog'
 import Login from './components/Login'
 import BlogForm from './components/BlogForm'
 import Users from './components/Users'
+import UserView from './components/UserView'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 import blogService from './services/blogs'
@@ -11,12 +12,13 @@ import { initUsers, updateUser } from './reducers/usersReducer'
 import { setNotification } from './reducers/notificationReducer'
 import { logout, load } from './reducers/loginReducer'
 import { useSelector, useDispatch } from 'react-redux'
-import { Link, Switch, Route }  from 'react-router-dom'
+import { useRouteMatch, Link, Switch, Route }  from 'react-router-dom'
 
 const App = () => {
     const dispatch = useDispatch()
     const blogs = useSelector(state => state.blogs)
     const user = useSelector(state => state.login)
+    const users = useSelector(state => state.users)
     const blogFormRef = useRef()
 
     useEffect(() => {
@@ -125,12 +127,20 @@ const App = () => {
         )
     }
 
+     const match = useRouteMatch('/users/:id')
+    const userView = match
+        ? users.find(user=> user.id === match.params.id)
+        : null
+
     return (
         <div>
             <NavBar/>
             <Switch>
+                <Route path='/users/:id'>
+                    <UserView user={userView}/>
+                </Route>
                 <Route path='/users'>
-                    <Users/>
+                    <Users users= {users}/>
                 </Route>
                 <Route path='/'>
                     <HomePage/>
