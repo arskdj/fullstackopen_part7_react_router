@@ -79,7 +79,6 @@ const App = () => {
     const commentHandler = async (blog_id, comment) => {
         const blog = await blogService.postComment(blog_id, comment)
         dispatch(updateBlog(blog))
-        
     }
 
     const showLoggedInMsg = () => (
@@ -142,6 +141,7 @@ const App = () => {
     const blogView = blogMatch
         ? blogs.find(blog=> blog.id === blogMatch.params.id)
         : null
+
 
     return (
         <div>
