@@ -19,9 +19,12 @@ blogsRouter.post('/', async (req, res) => {
     blog.user = user._id
 
     const newBlog = await blog.save()
-    user.blogs.push(newBlog._id)
+    console.log('newblog',newBlog)
 
-    const updatedUser = await User.findByIdAndUpdate(user.id, user)
+    user.blogs.push(newBlog._id)
+    console.log('newuser',user)
+
+    const updatedUser = await User.findByIdAndUpdate(user.id, user, {new:true})
 
     const result = {
         blog : newBlog,
@@ -38,9 +41,25 @@ blogsRouter.delete('/:id', async (req, res) => {
     const blog = await Blog.findById(blogId)
 
     if (blog.user && tokenUser._id.toString() === blog.user.toString()){
-        const result = await Blog.findByIdAndDelete(blogId)
-        if (result)
+        const deletedBlog = await Blog.findByIdAndDelete(blogId)
+        if (deletedBlog){
+            const user = await User.findById(blog.user.toString())
+
+            const filteredBlogs = user.blogs.filter(
+                blog => blog.toString() !== deletedBlog._id.toString()
+            )
+
+            user.blogs = filteredBlogs
+            console.log('filteredBlogs',filteredBlogs)
+
+            const updatedUser = await User.findByIdAndUpdate(blog.user, user, {new:true})
+            const result = {
+                user: updatedUser,
+                blog : deletedBlog,
+            }
+
             res.status(200).json(result)
+        }
         else
             res.status(404).end()
     }else{

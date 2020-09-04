@@ -21,27 +21,26 @@ const App = () => {
 
     useEffect(() => {
         dispatch(initBlogs())
-    }, [])
+    }, [dispatch])
 
     useEffect(() => {
         dispatch(initUsers())
-    }, [])
+    }, [dispatch])
 
     useEffect(() => {
         dispatch(load())
-    }, [])
+    }, [dispatch])
 
 
     const createBlog = async ({ title, url, author }) => {
-        const updates = await blogService.postBlog({ title, url, author }, user.token)
-        const blog = updates.blog
-        if (blog.error){
-            dispatch(setNotification('!e' + blog.error))
+        const updated = await blogService.postBlog({ title, url, author }, user.token)
+        if (updated.blog.error){
+            dispatch(setNotification('!e' + updated.blog.error))
         }else{
             blogFormRef.current.toggleVisibility()
-            dispatch(addBlog(blog))
-            dispatch(setNotification(`blog added "${blog.title}" by "${blog.author}"`))
-            dispatch(updateUser(updates.user))
+            dispatch(addBlog(updated.blog))
+            dispatch(setNotification(`blog added "${updated.blog.title}" by "${updated.blog.author}"`))
+            dispatch(updateUser(updated.user))
         }
     }
 
@@ -60,11 +59,12 @@ const App = () => {
         console.log('app.js',blog)
         const removed = await blogService.deleteBlog(blog.id, user.token)
         console.log(removed)
-        if (removed.error){
-            dispatch(setNotification('!e'+removed.error))
+        if (removed.blog.error){
+            dispatch(setNotification('!e'+removed.blog.error))
         } else {
-            dispatch(setNotification(`${removed.title} deleted`))
-            dispatch(removeBlog(blog.id))
+            dispatch(setNotification(`${removed.blog.title} deleted`))
+            dispatch(removeBlog(removed.blog.id))
+            dispatch(updateUser(removed.user))
         }
     }
 
