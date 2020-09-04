@@ -10,6 +10,10 @@ usersRouter.get('/', async (req, res) => {
         url : 1,
     })
 
+    //const users = await User.find({})
+
+    console.log(users)
+
     res.status(200).json(users) 
 })
 
