@@ -76,6 +76,12 @@ const App = () => {
         dispatch(setNotification(`bye ${user.name}`))
     }
 
+    const commentHandler = async (blog_id, comment) => {
+        const blog = await blogService.postComment(blog_id, comment)
+        dispatch(updateBlog(blog))
+        
+    }
+
     const showLoggedInMsg = () => (
         <div id='welcome'>
             Welcome {user.name} !
@@ -148,7 +154,7 @@ const App = () => {
                     <Users users= {users}/>
                 </Route>
                 <Route path='/blogs/:id'>
-                    <BlogView blog={blogView} likeHandler= {likeHandler}/>
+                    <BlogView blog={blogView} likeHandler= {likeHandler} commentHandler= {commentHandler}/>
                 </Route>
                 <Route path='/'>
                     <HomePage/>

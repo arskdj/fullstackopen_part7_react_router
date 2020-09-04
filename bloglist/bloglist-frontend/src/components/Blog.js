@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 const Blog = ({ blog, deleteBlog, user }) => {
 
     const blogStyle = {
-        paddingLeft: 5,
+        padding: 5,
         border: 'solid',
         borderWidth: 1,
         marginBottom: 5
