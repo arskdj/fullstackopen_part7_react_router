@@ -4,10 +4,11 @@ import Login from './components/Login'
 import BlogForm from './components/BlogForm'
 import Users from './components/Users'
 import UserView from './components/UserView'
+import BlogView from './components/BlogView'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 import blogService from './services/blogs'
-import { initBlogs, addBlog, likeBlog, removeBlog } from './reducers/blogReducer'
+import { initBlogs, addBlog, updateBlog, removeBlog } from './reducers/blogReducer'
 import { initUsers, updateUser } from './reducers/usersReducer'
 import { setNotification } from './reducers/notificationReducer'
 import { logout, load } from './reducers/loginReducer'
@@ -52,9 +53,8 @@ const App = () => {
         if (updatedBlog.error){
             dispatch(setNotification('!e'+updatedBlog.error))
         } else {
-            //dispatch(likeBlog(updatedBlog))
+            dispatch(updateBlog(updatedBlog))
             console.log('updatedBlog', updatedBlog)
-            return updatedBlog.likes
         }
     }
 
@@ -108,7 +108,7 @@ const App = () => {
             <h2>blogs</h2>
             <div id='blogList'>
                 {blogs.sort((a,b) => b.likes - a.likes).map(blog =>
-                    <Blog key={blog.id} blog={blog} likeBlog= {likeHandler} deleteBlog= {deleteBlog} user= {user}/>
+                    <Blog key={blog.id} blog={blog} deleteBlog= {deleteBlog} user= {user}/>
                 )}
             </div>
         </div>
@@ -127,9 +127,14 @@ const App = () => {
         )
     }
 
-     const match = useRouteMatch('/users/:id')
-    const userView = match
-        ? users.find(user=> user.id === match.params.id)
+     const userMatch = useRouteMatch('/users/:id')
+    const userView = userMatch
+        ? users.find(user=> user.id === userMatch.params.id)
+        : null
+
+     const blogMatch = useRouteMatch('/blogs/:id')
+    const blogView = blogMatch
+        ? blogs.find(blog=> blog.id === blogMatch.params.id)
         : null
 
     return (
@@ -141,6 +146,9 @@ const App = () => {
                 </Route>
                 <Route path='/users'>
                     <Users users= {users}/>
+                </Route>
+                <Route path='/blogs/:id'>
+                    <BlogView blog={blogView} likeHandler= {likeHandler}/>
                 </Route>
                 <Route path='/'>
                     <HomePage/>

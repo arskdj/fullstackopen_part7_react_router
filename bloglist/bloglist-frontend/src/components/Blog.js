@@ -1,35 +1,14 @@
 import React, { useState } from 'react'
-import PropTypes from 'prop-types'
+import { Link } from 'react-router-dom'
 
 
-const Blog = ({ blog, likeBlog, deleteBlog, user }) => {
+const Blog = ({ blog, deleteBlog, user }) => {
 
-    Blog.propTypes = {
-        blog: PropTypes.object.isRequired,
-        likeBlog : PropTypes.func,
-        deleteBlog : PropTypes.func,
-        user : PropTypes.object
-    }
-
-    const [likes, setLikes] = useState(blog.likes)
     const blogStyle = {
-        paddingTop: 10,
-        paddingLeft: 2,
+        paddingLeft: 5,
         border: 'solid',
         borderWidth: 1,
         marginBottom: 5
-    }
-
-    const [show, setShow] = useState(false)
-    const buttonName = show ? 'hide' : 'view'
-
-    const toggleDetails = () => {
-        setShow(!show)
-    }
-
-    const likeHandler = async () => {
-        const likes = await likeBlog(blog)
-        setLikes(likes)
     }
 
     const deleteHandler = async () => {
@@ -41,25 +20,10 @@ const Blog = ({ blog, likeBlog, deleteBlog, user }) => {
         return  (<button onClick={deleteHandler}> delete </button>)
     }
 
-    const blogDetails = () => (
-        <div>
-            <p id="url"> { blog.url } </p>
-            <p>
-                <span className="likes">  { likes } </span>
-                <button className="likeButton" onClick={likeHandler}> like </button>
-            </p>
-        </div>
-    )
-
     return (
         <div style={blogStyle}>
-            <p id="title"> {`${blog.title} by ${blog.author}`}</p>
-            <button className='showBlog' onClick={toggleDetails}> {buttonName} </button>
-            {   console.log('rending blog')  }
-            {   console.log(blog)  }
-            {   console.log(user)  }
+            <Link to={'/blogs/'+blog.id} id="title"> {`${blog.title} || ${blog.author} ||`}</Link>
             {user && blog.user &&  user.id === blog.user.id && showDeleteButton()}
-            {show && blogDetails()}
         </div>
     )
 }
