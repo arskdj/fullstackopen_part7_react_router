@@ -50,7 +50,7 @@ const login = async (username, password) => {
     }
 
     const token = await jwt.sign(payload, config.SECRET)
-    return { token, name: user.name, username: user.username}
+    return { token, ...user }
 }
 
 

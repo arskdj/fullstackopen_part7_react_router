@@ -55,7 +55,7 @@ const Blog = ({ blog, likeBlog, deleteBlog, user }) => {
         <div style={blogStyle}>
             <p id="title"> {`${blog.title} by ${blog.author}`}</p>
             <button className='showBlog' onClick={toggleDetails}> {buttonName} </button>
-            {user && blog.user &&  user.username === blog.user.username && showDeleteButton()}
+            {user && blog.user &&  user.id === blog.user.id && showDeleteButton()}
             {show && blogDetails()}
         </div>
     )
